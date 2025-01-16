@@ -334,15 +334,27 @@ void register_user() {
 }
 
 // 查找图书
+// 查找图书
 void search_book() {
     char title[100] = { 0 };
     printf("请输入图书名: ");
     scanf("%s", title);
 
     int found = 0;
+
+    // 打印表格头部
+    printf("\n查找结果：\n");
+    printf("+---------+------------------------+------------------------+---------+\n");
+    printf("| 图书ID  | 书名                   | 作者                   | 状态    |\n");
+    printf("+---------+------------------------+------------------------+---------+\n");
+
     for (int i = 0; i < num_books; i++) {
         if (strstr(books[i].title, title)) {
-            printf("图书ID: %d, 书名: %s, 作者: %s, 状态: %s\n", books[i].id, books[i].title, books[i].author, books[i].available ? "可借" : "已借");
+            printf("| %-7d | %-22s | %-22s | %-7s |\n",
+                books[i].id,
+                books[i].title,
+                books[i].author,
+                books[i].available ? "可借" : "已借");
             found = 1;
         }
     }
@@ -350,7 +362,11 @@ void search_book() {
     if (!found) {
         printf("未找到匹配的图书。\n");
     }
+    else {
+        printf("+---------+------------------------+------------------------+---------+\n");
+    }
 }
+
 
 // 显示所有图书
 void display_books() {
