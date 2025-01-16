@@ -440,6 +440,15 @@ void add_book() {
     Book book;
     printf("请输入图书ID: ");
     scanf("%d", &book.id);
+
+    // 检查图书ID是否已经存在
+    for (int i = 0; i < num_books; i++) {
+        if (books[i].id == book.id) {
+            printf("该图书ID已存在！\n");
+            return;
+        }
+    }
+
     printf("请输入图书书名: ");
     scanf(" %[^\n]", book.title);
     printf("请输入图书作者: ");
@@ -463,11 +472,23 @@ void remove_book() {
         return;
     }
 
-    for (int i = book_id - 1; i < num_books - 1; i++) {
-        books[i] = books[i + 1];
+    int found = 0;
+    for (int i = 0; i < num_books; i++) {
+        if (books[i].id == book_id) {
+            found = 1;
+            // 删除图书
+            for (int j = i; j < num_books - 1; j++) {
+                books[j] = books[j + 1];
+            }
+            num_books--;
+            printf("图书删除成功！\n");
+            break;
+        }
     }
-    num_books--;
-    printf("图书删除成功！\n");
+
+    if (!found) {
+        printf("未找到图书ID！\n");
+    }
 }
 
 // 修改图书信息
@@ -481,13 +502,24 @@ void modify_book() {
         return;
     }
 
-    printf("请输入新的书名: ");
-    scanf(" %[^\n]", books[book_id - 1].title);
-    printf("请输入新的作者: ");
-    scanf(" %[^\n]", books[book_id - 1].author);
+    int found = 0;
+    for (int i = 0; i < num_books; i++) {
+        if (books[i].id == book_id) {
+            found = 1;
+            printf("请输入新的书名: ");
+            scanf(" %[^\n]", books[i].title);
+            printf("请输入新的作者: ");
+            scanf(" %[^\n]", books[i].author);
+            printf("图书信息修改成功！\n");
+            break;
+        }
+    }
 
-    printf("图书信息修改成功！\n");
+    if (!found) {
+        printf("未找到图书ID！\n");
+    }
 }
+
 
 // 查看借书记录
 void view_borrow_records() {
