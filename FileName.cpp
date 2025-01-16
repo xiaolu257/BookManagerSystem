@@ -349,10 +349,22 @@ void search_book() {
 
 // 显示所有图书
 void display_books() {
+    printf("\n图书信息：\n");
+    printf("+---------+------------------------+------------------------+---------+\n");
+    printf("| 图书ID  | 书名                   | 作者                   | 状态    |\n");
+    printf("+---------+------------------------+------------------------+---------+\n");
+
     for (int i = 0; i < num_books; i++) {
-        printf("图书ID: %d, 书名: %s, 作者: %s, 状态: %s\n", books[i].id, books[i].title, books[i].author, books[i].available ? "可借" : "已借");
+        printf("| %-7d | %-22s | %-22s | %-7s |\n",
+            books[i].id,
+            books[i].title,
+            books[i].author,
+            books[i].available ? "可借" : "已借");
     }
+
+    printf("+---------+------------------------+------------------------+---------+\n");
 }
+
 
 // 借书
 void borrow_book(User* user) {
