@@ -5,3 +5,6 @@
 .vs/图书管理系统/v17/Browse.VC.db-wal
 .vs/图书管理系统/v17/Browse.VC.opendb
 .vs/图书管理系统/v17/ipch/AutoPCH/aa94dc4bddb24030/FILENAME.ipch
+/.vs
+/x64
+/图书管理系统
