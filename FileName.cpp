@@ -61,29 +61,37 @@ void remove_book();
 void modify_book();
 void view_borrow_records();
 void register_user();  // 注册用户
+void exit_program();   // 退出程序
 
 // 主函数
 int main() {
     load_data();
 
     int choice;
-    printf("1. 用户登录\n");
-    printf("2. 管理员登录\n");
-    printf("3. 用户注册\n");
-    printf("请选择操作: ");
-    scanf("%d", &choice);
+    while (1) {
+        printf("1. 用户登录\n");
+        printf("2. 管理员登录\n");
+        printf("3. 用户注册\n");
+        printf("0. 退出系统\n");
+        printf("请选择操作: ");
+        scanf("%d", &choice);
 
-    if (choice == 1) {
-        login_user();
-    }
-    else if (choice == 2) {
-        login_admin();
-    }
-    else if (choice == 3) {
-        register_user();
-    }
-    else {
-        printf("无效的选择！\n");
+        if (choice == 1) {
+            login_user();
+        }
+        else if (choice == 2) {
+            login_admin();
+        }
+        else if (choice == 3) {
+            register_user();
+        }
+        else if (choice == 0) {
+            exit_program();
+            break;  // 退出系统
+        }
+        else {
+            printf("无效的选择！\n");
+        }
     }
 
     save_data();
@@ -245,16 +253,20 @@ void user_menu(User* user) {
         printf("2. 显示所有图书\n");
         printf("3. 借书\n");
         printf("4. 还书\n");
-        printf("5. 退出\n");
+        printf("0. 注销登录\n");
         printf("请选择操作: ");
         scanf("%d", &choice);
+
+        if (choice == 0) {
+            printf("注销登录，返回主菜单。\n");
+            break;  // 返回主菜单
+        }
 
         switch (choice) {
         case 1: search_book(); break;
         case 2: display_books(); break;
         case 3: borrow_book(user); break;
         case 4: return_book(user); break;
-        case 5: return;
         default: printf("无效的选择！\n"); break;
         }
     }
@@ -269,16 +281,20 @@ void admin_menu() {
         printf("2. 删除图书\n");
         printf("3. 修改图书信息\n");
         printf("4. 查看借书记录\n");
-        printf("5. 退出\n");
+        printf("0. 注销登录\n");
         printf("请选择操作: ");
         scanf("%d", &choice);
+
+        if (choice == 0) {
+            printf("注销登录，返回主菜单。\n");
+            break;  // 返回主菜单
+        }
 
         switch (choice) {
         case 1: add_book(); break;
         case 2: remove_book(); break;
         case 3: modify_book(); break;
         case 4: view_borrow_records(); break;
-        case 5: return;
         default: printf("无效的选择！\n"); break;
         }
     }
@@ -456,4 +472,9 @@ void view_borrow_records() {
     for (int i = 0; i < num_borrow_records; i++) {
         printf("借书ID: %d, 用户ID: %d, 图书ID: %d, 借书日期: %s\n", i + 1, borrow_records[i].user_id, borrow_records[i].book_id, borrow_records[i].borrow_date);
     }
+}
+
+// 退出系统
+void exit_program() {
+    printf("感谢使用图书管理系统！\n");
 }
