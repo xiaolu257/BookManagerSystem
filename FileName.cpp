@@ -107,12 +107,14 @@ void load_data() {
     file = fopen("books.txt", "r");
     if (file == NULL) {
         printf("无法打开图书文件！\n");
-        return;
+        // 如果无法加载图书信息，依然允许继续加载其他数据
     }
-    while (fscanf(file, "%d,%99[^,],%99[^,],%d\n", &books[num_books].id, books[num_books].title, books[num_books].author, &books[num_books].available) != EOF) {
-        num_books++;
+    else {
+        while (fscanf(file, "%d,%99[^,],%99[^,],%d\n", &books[num_books].id, books[num_books].title, books[num_books].author, &books[num_books].available) != EOF) {
+            num_books++;
+        }
+        fclose(file);
     }
-    fclose(file);
 
     // 读取用户信息
     file = fopen("users.txt", "r");
@@ -147,6 +149,7 @@ void load_data() {
     }
     fclose(file);
 }
+
 
 // 保存数据
 void save_data() {
