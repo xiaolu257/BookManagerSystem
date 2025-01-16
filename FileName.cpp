@@ -282,6 +282,8 @@ void admin_menu() {
         printf("2. 删除图书\n");
         printf("3. 修改图书信息\n");
         printf("4. 查看借书记录\n");
+        printf("5. 查找图书\n");   // 添加查找图书选项
+        printf("6. 显示所有图书\n"); // 添加显示所有图书选项
         printf("0. 注销登录\n");
         printf("请选择操作: ");
         scanf("%d", &choice);
@@ -296,10 +298,13 @@ void admin_menu() {
         case 2: remove_book(); break;
         case 3: modify_book(); break;
         case 4: view_borrow_records(); break;
+        case 5: search_book(); break;  // 调用查找图书函数
+        case 6: display_books(); break; // 调用显示所有图书函数
         default: printf("无效的选择！\n"); break;
         }
     }
 }
+
 
 // 注册用户
 void register_user() {
