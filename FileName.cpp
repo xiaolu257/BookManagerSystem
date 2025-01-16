@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define MAX_BOOKS 100
 #define MAX_USERS 100
@@ -369,9 +370,13 @@ void borrow_book(User* user) {
         return;
     }
 
-    printf("请输入借书日期 (格式：YYYY-MM-DD): ");
-    char borrow_date[20] = { 0 };
-    scanf("%s", borrow_date);
+    // 获取当前日期
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    // 格式化日期为 YYYY-MM-DD
+    char borrow_date[20];
+    snprintf(borrow_date, sizeof(borrow_date), "%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
 
     books[book_id - 1].available = 0; // 设置图书为已借
     borrow_records[num_borrow_records].book_id = book_id;
@@ -379,7 +384,7 @@ void borrow_book(User* user) {
     strcpy(borrow_records[num_borrow_records].borrow_date, borrow_date);
     num_borrow_records++;
 
-    printf("借书成功！\n");
+    printf("借书成功！借书日期: %s\n", borrow_date);
 }
 
 // 还书
