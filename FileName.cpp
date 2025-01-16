@@ -523,10 +523,39 @@ void modify_book() {
 
 // 查看借书记录
 void view_borrow_records() {
+    printf("\n借书记录：\n");
+    printf("+---------+------------+--------------+------------+--------------------------+--------------+------------+\n");
+    printf("| 借书ID  | 用户ID     | 用户名       | 图书ID     | 书名                     | 作者         | 借书日期   |\n");
+    printf("+---------+------------+--------------+------------+--------------------------+--------------+------------+\n");
+
+    // 遍历借书记录并打印表格
     for (int i = 0; i < num_borrow_records; i++) {
-        printf("借书ID: %d, 用户ID: %d, 图书ID: %d, 借书日期: %s\n", i + 1, borrow_records[i].user_id, borrow_records[i].book_id, borrow_records[i].borrow_date);
+        int user_id = borrow_records[i].user_id;
+        int book_id = borrow_records[i].book_id;
+
+        // 查找用户信息
+        char username[50] = { 0 };
+        strcpy(username, users[user_id - 1].username);  // 用户ID从1开始，因此是 user_id - 1
+
+        // 查找图书信息
+        char book_title[100] = { 0 }, book_author[100] = { 0 };
+        strcpy(book_title, books[book_id - 1].title);    // 图书ID从1开始，因此是 book_id - 1
+        strcpy(book_author, books[book_id - 1].author);
+
+        // 打印表格行
+        printf("| %-7d | %-10d | %-12s | %-10d | %-24s | %-12s | %-10s |\n",
+            i + 1,  // 借书ID
+            user_id,  // 用户ID
+            username,  // 用户名
+            book_id,  // 图书ID
+            book_title,  // 书名
+            book_author,  // 作者
+            borrow_records[i].borrow_date);  // 借书日期
     }
+
+    printf("+---------+------------+--------------+------------+--------------------------+--------------+------------+\n");
 }
+
 
 // 退出系统
 void exit_program() {
