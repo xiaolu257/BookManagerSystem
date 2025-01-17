@@ -348,9 +348,34 @@ void register_user() {
 
 // 查找图书
 void search_book() {
-    char title[100] = { 0 };
-    printf("请输入图书名: ");
-    scanf("%s", title);
+    int choice;
+    printf("\n查找图书:\n");
+    printf("1. 根据图书ID查找\n");
+    printf("2. 根据书名查找\n");
+    printf("3. 根据作者查找\n");
+    printf("请选择查找方式: ");
+    scanf("%d", &choice);
+
+    // 输入查询条件
+    char search_query[100] = { 0 };
+    int book_id;  // 用于存储图书ID
+    switch (choice) {
+    case 1:
+        printf("请输入图书ID: ");
+        scanf("%d", &book_id);  // 存储图书ID
+        break;
+    case 2:
+        printf("请输入图书名: ");
+        scanf(" %[^\n]", search_query);  // 使用[^\n]以允许输入包含空格的书名
+        break;
+    case 3:
+        printf("请输入作者名: ");
+        scanf(" %[^\n]", search_query);  // 使用[^\n]以允许输入包含空格的作者名
+        break;
+    default:
+        printf("无效的选择！\n");
+        return;
+    }
 
     int found = 0;
 
@@ -360,15 +385,42 @@ void search_book() {
     printf("| 图书ID  | 书名                   | 作者                   | 描述                        | 状态    |\n");
     printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
 
+    // 根据选择的条件查找图书
     for (int i = 0; i < num_books; i++) {
-        if (strstr(books[i].title, title)) {
-            printf("| %-7d | %-22s | %-22s | %-27s | %-7s |\n",
-                books[i].id,
-                books[i].title,
-                books[i].author,
-                books[i].description,  // 显示描述
-                books[i].available ? "可借" : "已借");
-            found = 1;
+        switch (choice) {
+        case 1:  // 根据图书ID查找
+            if (books[i].id == book_id) {
+                printf("| %-7d | %-22s | %-22s | %-27s | %-7s |\n",
+                    books[i].id,
+                    books[i].title,
+                    books[i].author,
+                    books[i].description,  // 显示描述
+                    books[i].available ? "可借" : "已借");
+                found = 1;
+            }
+            break;
+        case 2:  // 根据书名查找
+            if (strstr(books[i].title, search_query)) {
+                printf("| %-7d | %-22s | %-22s | %-27s | %-7s |\n",
+                    books[i].id,
+                    books[i].title,
+                    books[i].author,
+                    books[i].description,  // 显示描述
+                    books[i].available ? "可借" : "已借");
+                found = 1;
+            }
+            break;
+        case 3:  // 根据作者查找
+            if (strstr(books[i].author, search_query)) {
+                printf("| %-7d | %-22s | %-22s | %-27s | %-7s |\n",
+                    books[i].id,
+                    books[i].title,
+                    books[i].author,
+                    books[i].description,  // 显示描述
+                    books[i].available ? "可借" : "已借");
+                found = 1;
+            }
+            break;
         }
     }
 
@@ -379,6 +431,7 @@ void search_book() {
         printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
     }
 }
+
 
 // 显示所有图书
 void display_books() {
