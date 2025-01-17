@@ -14,8 +14,10 @@ typedef struct {
     int id;
     char title[100];
     char author[100];
+    char description[255]; // 新增的描述属性
     int available; // 1: 可借 0: 已借
 } Book;
+
 
 // 用户信息结构体
 typedef struct {
@@ -110,7 +112,12 @@ void load_data() {
         // 如果无法加载图书信息，依然允许继续加载其他数据
     }
     else {
-        while (fscanf(file, "%d,%99[^,],%99[^,],%d\n", &books[num_books].id, books[num_books].title, books[num_books].author, &books[num_books].available) != EOF) {
+        while (fscanf(file, "%d,%99[^,],%99[^,],%255[^,],%d\n",
+            &books[num_books].id,
+            books[num_books].title,
+            books[num_books].author,
+            books[num_books].description,
+            &books[num_books].available) != EOF) {
             num_books++;
         }
         fclose(file);
@@ -150,7 +157,6 @@ void load_data() {
     fclose(file);
 }
 
-
 // 保存数据
 void save_data() {
     FILE* file;
@@ -162,7 +168,12 @@ void save_data() {
         return;
     }
     for (int i = 0; i < num_books; i++) {
-        fprintf(file, "%d,%s,%s,%d\n", books[i].id, books[i].title, books[i].author, books[i].available);
+        fprintf(file, "%d,%s,%s,%s,%d\n",
+            books[i].id,
+            books[i].title,
+            books[i].author,
+            books[i].description,
+            books[i].available);
     }
     fclose(file);
 
@@ -308,7 +319,6 @@ void admin_menu() {
     }
 }
 
-
 // 注册用户
 void register_user() {
     char username[50] = { 0 }, password[50] = { 0 };
@@ -337,7 +347,6 @@ void register_user() {
 }
 
 // 查找图书
-// 查找图书
 void search_book() {
     char title[100] = { 0 };
     printf("请输入图书名: ");
@@ -347,16 +356,17 @@ void search_book() {
 
     // 打印表格头部
     printf("\n查找结果：\n");
-    printf("+---------+------------------------+------------------------+---------+\n");
-    printf("| 图书ID  | 书名                   | 作者                   | 状态    |\n");
-    printf("+---------+------------------------+------------------------+---------+\n");
+    printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
+    printf("| 图书ID  | 书名                   | 作者                   | 描述                        | 状态    |\n");
+    printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
 
     for (int i = 0; i < num_books; i++) {
         if (strstr(books[i].title, title)) {
-            printf("| %-7d | %-22s | %-22s | %-7s |\n",
+            printf("| %-7d | %-22s | %-22s | %-27s | %-7s |\n",
                 books[i].id,
                 books[i].title,
                 books[i].author,
+                books[i].description,  // 显示描述
                 books[i].available ? "可借" : "已借");
             found = 1;
         }
@@ -366,29 +376,28 @@ void search_book() {
         printf("未找到匹配的图书。\n");
     }
     else {
-        printf("+---------+------------------------+------------------------+---------+\n");
+        printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
     }
 }
-
 
 // 显示所有图书
 void display_books() {
     printf("\n图书信息：\n");
-    printf("+---------+------------------------+------------------------+---------+\n");
-    printf("| 图书ID  | 书名                   | 作者                   | 状态    |\n");
-    printf("+---------+------------------------+------------------------+---------+\n");
+    printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
+    printf("| 图书ID  | 书名                   | 作者                   | 描述                        | 状态    |\n");
+    printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
 
     for (int i = 0; i < num_books; i++) {
-        printf("| %-7d | %-22s | %-22s | %-7s |\n",
+        printf("| %-7d | %-22s | %-22s | %-27s | %-7s |\n",
             books[i].id,
             books[i].title,
             books[i].author,
+            books[i].description,  // 显示描述
             books[i].available ? "可借" : "已借");
     }
 
-    printf("+---------+------------------------+------------------------+---------+\n");
+    printf("+---------+------------------------+------------------------+-----------------------------+---------+\n");
 }
-
 
 // 借书
 void borrow_book(User* user) {
@@ -472,6 +481,8 @@ void add_book() {
     scanf(" %[^\n]", book.title);
     printf("请输入图书作者: ");
     scanf(" %[^\n]", book.author);
+    printf("请输入图书描述: ");
+    scanf(" %[^\n]", book.description);  // 输入图书描述
     book.available = 1; // 默认可借
 
     books[num_books] = book;
@@ -529,6 +540,8 @@ void modify_book() {
             scanf(" %[^\n]", books[i].title);
             printf("请输入新的作者: ");
             scanf(" %[^\n]", books[i].author);
+            printf("请输入新的描述: ");
+            scanf(" %[^\n]", books[i].description);  // 修改描述
             printf("图书信息修改成功！\n");
             break;
         }
