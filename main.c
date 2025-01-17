@@ -151,7 +151,7 @@ void load_data() {
         printf("无法打开借书记录文件！\n");
         return;
     }
-    while (fscanf(file, "%d,%d,%d,%19[^\n]\n", &borrow_records[num_borrow_records].book_id, &borrow_records[num_borrow_records].user_id, &borrow_records[num_borrow_records].user_id, borrow_records[num_borrow_records].borrow_date) != EOF) {
+    while (fscanf(file, "%d,%d,%19[^\n]\n", &borrow_records[num_borrow_records].user_id, &borrow_records[num_borrow_records].book_id, borrow_records[num_borrow_records].borrow_date) != EOF) {
         num_borrow_records++;
     }
     fclose(file);
@@ -206,7 +206,7 @@ void save_data() {
         return;
     }
     for (int i = 0; i < num_borrow_records; i++) {
-        fprintf(file, "%d,%d,%d,%s\n", borrow_records[i].book_id, borrow_records[i].user_id, borrow_records[i].book_id, borrow_records[i].borrow_date);
+        fprintf(file, "%d,%d,%s\n", borrow_records[i].user_id, borrow_records[i].book_id, borrow_records[i].borrow_date);
     }
     fclose(file);
 }
