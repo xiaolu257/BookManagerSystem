@@ -432,7 +432,6 @@ void search_book() {
     }
 }
 
-
 // 显示所有图书
 void display_books() {
     printf("\n图书信息：\n");
@@ -482,6 +481,8 @@ void borrow_book(User* user) {
     strcpy(borrow_records[num_borrow_records].borrow_date, borrow_date);
     num_borrow_records++;
 
+    save_data();  // 保存数据到文件
+
     printf("借书成功！借书日期: %s\n", borrow_date);
 }
 
@@ -505,6 +506,7 @@ void return_book(User* user) {
                 borrow_records[j] = borrow_records[j + 1];
             }
             num_borrow_records--;
+            save_data();  // 保存数据到文件
             printf("还书成功！\n");
             found = 1;
             break;
@@ -541,6 +543,8 @@ void add_book() {
     books[num_books] = book;
     num_books++;
 
+    save_data();  // 保存数据到文件
+
     printf("图书添加成功！\n");
 }
 
@@ -564,6 +568,7 @@ void remove_book() {
                 books[j] = books[j + 1];
             }
             num_books--;
+            save_data();  // 保存数据到文件
             printf("图书删除成功！\n");
             break;
         }
@@ -595,6 +600,7 @@ void modify_book() {
             scanf(" %[^\n]", books[i].author);
             printf("请输入新的描述: ");
             scanf(" %[^\n]", books[i].description);  // 修改描述
+            save_data();  // 保存数据到文件
             printf("图书信息修改成功！\n");
             break;
         }
@@ -604,7 +610,6 @@ void modify_book() {
         printf("未找到图书ID！\n");
     }
 }
-
 
 // 查看借书记录
 void view_borrow_records() {
@@ -640,7 +645,6 @@ void view_borrow_records() {
 
     printf("+---------+------------+--------------+------------+--------------------------+--------------+------------+\n");
 }
-
 
 // 退出系统
 void exit_program() {
